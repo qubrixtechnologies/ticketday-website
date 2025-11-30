@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ticketday.in/sitemap.xml

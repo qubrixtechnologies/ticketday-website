@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ticketday — IRCTC Booking Date Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
+<meta name="description" content="Enter your journey date and instantly know when IRCTC ticket booking opens. Supports 60-day rule and Tatkal timings with Google, Apple & Outlook calendar reminders.">
+<meta name="keywords" content="IRCTC booking date calculator, IRCTC 60 day rule, Tatkal booking time, train ticket booking date, ticketday, IRCTC reminder, Indian Railways booking, Tatkal calculator">
+
+<meta name="robots" content="index,follow">
+<meta name="author" content="TicketDay.in">
+
+
+<!-- Canonical -->
+<link rel="canonical" href="https://ticketday.in">
+
+<!-- Open Graph (Facebook/LinkedIn/WhatsApp) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="TicketDay – IRCTC Ticket Booking Date Calculator">
+<meta property="og:description" content="Calculate when you can book IRCTC tickets for your journey date and add booking reminders to Google, Apple, Outlook & Yahoo calendars.">
+<meta property="og:url" content="https://ticketday.in">
+<meta property="og:site_name" content="TicketDay.in">
+<meta property="og:image" content="https://ticketday.in/images/og-image.png" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TicketDay – IRCTC Booking Date Calculator">
+<meta name="twitter:description" content="Enter your journey date and get exact IRCTC booking date & Tatkal timing with calendar reminders.">
+<meta name="twitter:image" content="https://ticketday.in/images/og-image.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["WebSite", "WebApplication"],
+  "name": "TicketDay.in",
+  "url": "https://ticketday.in",
+  "description": "IRCTC ticket booking date calculator that helps you find when booking opens for your journey date and Tatkal, with calendar reminders.",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "en-IN",
+  "publisher": {
+    "@type": "Organization",
+    "name": "TicketDay.in"
+  },
+  "potentialAction": {
+    "@type": "Action",
+    "name": "Calculate IRCTC booking date",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://ticketday.in"
+    }
+  }
+}
+</script>
+
+</head>
+<body>
+  <div class="page">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="logo"><a href="https://ticketday.in/" class="logo">TICKETDAY.IN</a></div>
+        <nav class="nav">
+          <a href="#" class="nav-link">Today's Booking Date</a>
+          <a href="#tools" class="nav-link">Tools</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero banner -->
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-inner container">
+        <h1 class="hero-title">
+          Today you can book IRCTC tickets for journey dates<br>
+          till <span id="hero-last-journey" class="hero-date">January 15, 2025</span>
+        </h1>
+        <p class="hero-sub">
+          This date is calculated assuming the train starts from its base station on the same day.
+        </p>
+      </div>
+    </section>
+
+    <!-- Main content -->
+    <main class="container main">
+
+      <!-- Enter journey date card -->
+      <section class="card card-narrow">
+        <div class="card-header">
+          <span class="card-icon">📅</span>
+          <span class="card-title">Enter the Date of Journey</span>
+        </div>
+
+        <label class="field-label" for="journeyDate">Select Journey Date</label>
+        <input id="journeyDate" type="date" class="input" placeholder="dd-mm-yyyy" />
+
+        <div class="booking-options">
+          <div class="booking-label">Booking Window</div>
+          <div class="pill-row">
+            <label class="pill active">
+              <input type="radio" name="type" value="60-day" checked />
+              <span>60-day</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="type" value="tatkal" />
+              <span>Tatkal (1 day @ 10:00)</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="type" value="custom" />
+              <span>Custom</span>
+            </label>
+          </div>
+          <div id="custom-days-wrapper" class="custom-days" style="display:none;">
+            <input id="customDays" type="number" min="0" value="60" class="input small" />
+            <span class="muted">days before journey</span>
+          </div>
+        </div>
+
+        <button id="calcBtn" class="btn primary full">Calculate Booking Date</button>
+      </section>
+
+      <!-- Booking opens card -->
+      <section class="card card-narrow" id="booking-card">
+        <div class="card-header">
+          <span class="card-icon">⏰</span>
+          <span class="card-title">Booking Opens</span>
+        </div>
+
+        <div id="no-result" class="muted center-text">
+          No result yet. Select a journey date and click “Calculate Booking Date”.
+        </div>
+
+        <div id="result-block" class="booking-result" style="display:none;">
+          <div id="booking-open-date" class="booking-date">December 16, 2024</div>
+          <div id="booking-open-time" class="booking-time">@ 8:00 AM</div>
+
+          <p class="muted center-text small" id="booking-desc">
+            You can start booking on <span class="strong" id="booking-on"></span>.
+          </p>
+
+          <div class="meta-row">
+            <span class="meta-item">🚆 IRCTC</span>
+            <span class="meta-item">🔔 Reminder Set</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add to calendar card -->
+      <section class="card card-wide">
+        <div class="card-header center-text">
+          <span class="card-icon">🗓️</span>
+          <span class="card-title">Add this Booking Date to Your Calendar</span>
+        </div>
+
+        <div class="calendar-grid">
+          <a id="google-link" class="cal-btn" target="_blank" rel="noreferrer">Google Calendar</a>
+          <button id="apple-btn" class="cal-btn">Apple Calendar</button>
+          <a id="outlook-link" class="cal-btn" target="_blank" rel="noreferrer">Outlook Calendar</a>
+          <a id="yahoo-link" class="cal-btn" target="_blank" rel="noreferrer">Yahoo Calendar</a>
+          <button id="ics-btn" class="cal-btn">Download .ICS</button>
+          <button id="phone-btn" class="cal-btn">Phone Calendar</button>
+        </div>
+      </section>
+
+      <!-- Extra tools -->
+      <section id="tools" class="card card-wide tools-card">
+        <div class="card-header center-text">
+          <span class="card-icon">🧰</span>
+          <span class="card-title">Extra Tools</span>
+        </div>
+        <div class="tools-row">
+          <button class="tool-pill">Train Running Status</button>
+          <button class="tool-pill">Ticket Booking Reminder</button>
+          <button class="tool-pill">Tatkal Calculator</button>
+          <button class="tool-pill">PNR Status</button>
+          <button class="tool-pill">Travel Accessories</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer -->
+    <footer class="footer" id="contact">
+      <div class="container footer-inner">
+        <div class="footer-text">
+          TICKETDAY.IN is not responsible for any miscalculations or changes in IRCTC policies.
+        </div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms</a>
+          <a href="#" class="footer-link">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
