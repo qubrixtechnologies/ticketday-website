@@ -1,0 +1,33 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.bak
+
+# Node modules (if you plan to add JS tools later)
+node_modules/
+
+# Build/Cache directories (future-proofing)
+dist/
+build/
+.cache/
+.next/
+
+# IDE / Editor files
+.vscode/
+.idea/
+
+# Private folders
+.env
+.secrets/
+*.key
+
+# macOS junk
+._*
